@@ -1,4 +1,4 @@
-package br.ce.wcaquino.entidades;
+package br.ydamasceno.entidades;
 
 public class Filme {
 
