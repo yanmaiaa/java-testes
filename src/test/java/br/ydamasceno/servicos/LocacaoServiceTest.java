@@ -1,3 +1,4 @@
+package br.ydamasceno.servicos;
 
 
 import java.util.Date;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import br.ydamasceno.entidades.Filme;
 import br.ydamasceno.entidades.Locacao;
 import br.ydamasceno.entidades.Usuario;
-import br.ydamasceno.servicos.LocacaoService;
 import br.ydamasceno.utils.DataUtils;
 
 public class LocacaoServiceTest {
