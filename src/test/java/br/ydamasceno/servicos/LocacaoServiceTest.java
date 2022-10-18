@@ -23,7 +23,8 @@ public class LocacaoServiceTest {
 	    Locacao locacao = service.alugarFilme(usuario, filme); 
 
 		//verificacao
-		Assert.assertTrue(locacao.getValor() == 5.0);
+		Assert.assertEquals(5.0,locacao.getValor(), 0.1); //melhorando ordem para caso dê um erro a mensagem fique mais clara entre o esperado e 
+		//o obtido pelo método. No assertThat muda a ordem, então é bom atentar ao que deve ser colocado no método
 		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
 		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(),DataUtils.obterDataComDiferencaDias(1)));
 		
