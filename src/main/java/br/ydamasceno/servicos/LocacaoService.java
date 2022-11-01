@@ -2,6 +2,7 @@ package br.ydamasceno.servicos;
 
 import static br.ydamasceno.utils.DataUtils.adicionarDias;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import br.ydamasceno.entidades.Locacao;
 import br.ydamasceno.entidades.Usuario;
 import br.ydamasceno.exceptions.FilmeSemEstoqueException;
 import br.ydamasceno.exceptions.LocadoraException;
+import br.ydamasceno.utils.DataUtils;
 
 public class LocacaoService {
 	
@@ -52,11 +54,17 @@ public class LocacaoService {
 			
 			valorTotal += valorDoFilme;
 		}
+		
 		locacao.setValor(valorTotal);
+		
 		Date dataEntrega = new Date();
 		dataEntrega = adicionarDias(dataEntrega, 1);
-		locacao.setDataRetorno(dataEntrega);
+		
+		if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {
+			dataEntrega = adicionarDias(dataEntrega, 1); //se for domingo, acrescenta mais 1 dia para ir para segunda, que é o dia onde faz entrega
+		}
 
+		locacao.setDataRetorno(dataEntrega);
 		
 		return locacao;
 	}

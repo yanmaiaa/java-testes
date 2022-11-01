@@ -8,14 +8,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -26,6 +26,7 @@ import br.ydamasceno.entidades.Locacao;
 import br.ydamasceno.entidades.Usuario;
 import br.ydamasceno.exceptions.FilmeSemEstoqueException;
 import br.ydamasceno.exceptions.LocadoraException;
+import br.ydamasceno.utils.DataUtils;
 
 
 public class LocacaoServiceTest {
@@ -60,6 +61,10 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
+		
+		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY)); //Não será exeutado no sábado
+		//estratégia muito usada para verificar se um teste deve ser executado ou não de acordo com algum determinado recurso que esteja disponível
+		//ou não.
 		//cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		List<Filme> filme = Arrays.asList(new Filme("Filme 1", 1, 5.0));
@@ -168,5 +173,21 @@ public class LocacaoServiceTest {
 		//verificacao
 		//esperado = 4 + 4 + 3 + 2 + 1 + 0
 		assertThat(resultado.getValor(), is(14.0));
+	}
+	
+	@Test
+	public void deveDevolverFilmeNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
+		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY)); //Checagem dinâmica para que a gente possa executar este método
+		//no sábado, pois ele está validando antes através de uma lógica
+		//cenario
+		Usuario usuario = new Usuario("Usuario 1");
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 5.0));
+		
+		//acao
+		Locacao retorno = service.alugarFilme(usuario, filmes);
+		
+		//verificacao
+		boolean isSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+		Assert.assertTrue(isSegunda);
 	}
 }
