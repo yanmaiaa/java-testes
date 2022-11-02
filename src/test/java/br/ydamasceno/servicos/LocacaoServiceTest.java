@@ -2,6 +2,8 @@ package br.ydamasceno.servicos;
 
 
 
+import static br.ydamasceno.matchers.MatchersProprios.caiEm;
+import static br.ydamasceno.matchers.MatchersProprios.caiNumaSegunda;
 import static br.ydamasceno.utils.DataUtils.isMesmaData;
 import static br.ydamasceno.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,6 +28,8 @@ import br.ydamasceno.entidades.Locacao;
 import br.ydamasceno.entidades.Usuario;
 import br.ydamasceno.exceptions.FilmeSemEstoqueException;
 import br.ydamasceno.exceptions.LocadoraException;
+import br.ydamasceno.matchers.DiaSemanaMatcher;
+import br.ydamasceno.matchers.MatchersProprios;
 import br.ydamasceno.utils.DataUtils;
 
 
@@ -119,8 +123,7 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void deveDevolverFilmeNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
-		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY)); //Checagem dinâmica para que a gente possa executar este método
-		//no sábado, pois ele está validando antes através de uma lógica
+		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY)); 
 		//cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 5.0));
@@ -129,7 +132,8 @@ public class LocacaoServiceTest {
 		Locacao retorno = service.alugarFilme(usuario, filmes);
 		
 		//verificacao
-		boolean isSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(isSegunda);
+		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 	}
+	
+	
 }
