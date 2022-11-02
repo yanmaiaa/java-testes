@@ -71,14 +71,10 @@ public class CalculoValorLocacaoTest {
 		Locacao resultado = service.alugarFilme(usuario, filmes);
 		
 		//verificacao
-		//esperado = 4 + 4 + 3 + 2 + 1 
 		assertThat(resultado.getValor(), is(valorLocacao));
+		
 	}
 	
-	@Test
-	public void print() {
-		System.out.println(valorLocacao);
-	}
-	
+
 
 }
