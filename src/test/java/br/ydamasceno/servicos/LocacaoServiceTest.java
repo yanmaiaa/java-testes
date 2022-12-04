@@ -33,6 +33,7 @@ import br.ydamasceno.exceptions.LocadoraException;
 import br.ydamasceno.matchers.DiaSemanaMatcher;
 import br.ydamasceno.matchers.MatchersProprios;
 import br.ydamasceno.utils.DataUtils;
+import buildermaster.BuilderMaster;
 
 
 public class LocacaoServiceTest {
@@ -137,5 +138,9 @@ public class LocacaoServiceTest {
 //		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 //	}
 //	
+	
+	public static void main(String[] args) {
+		new BuilderMaster().gerarCodigoClasse(Locacao.class);
+	}
 	
 }
